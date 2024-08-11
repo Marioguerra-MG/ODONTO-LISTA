@@ -83,3 +83,22 @@ function deleteItem(button) {
     // Remove a linha correspondente ao botão de deletar clicado
     button.closest('tr').remove();
 }
+
+document.getElementById('mContato').addEventListener('input', function(e) {
+    let telefone = e.target.value;
+
+    // Remove todos os caracteres não numéricos
+    telefone = telefone.replace(/\D/g, '');
+
+    // Aplica a formatação enquanto o usuário digita
+    if (telefone.length <= 10) {
+        // Formatação para números fixos ou móveis sem o dígito adicional
+        telefone = telefone.replace(/^(\d{2})(\d{0,4})(\d{0,4})$/, '($1) $2-$3');
+    } else {
+        // Formatação para números móveis com o dígito adicional
+        telefone = telefone.replace(/^(\d{2})(\d{0,5})(\d{0,4})$/, '($1) $2-$3');
+    }
+
+    // Atualiza o valor do campo de entrada com a formatação
+    e.target.value = telefone;
+});
