@@ -1,0 +1,283 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
+
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: "Poppins", sans-serif;
+    font-weight: 300;
+    font-style: normal;
+}
+
+body{
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    background-color: rgb(207, 237, 255);
+}
+
+.conteudoCabecalho{
+    width: 90%;
+    height: 10%;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    background-color: white;
+    margin-top: 20px;
+    border-radius: 15px 15px 0 0;
+    padding: 20px; 
+}
+
+
+.conteudoCabecalho a i{
+    color: rgb(117, 117, 117);
+    font-size: 25px;
+    text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.2);
+}
+
+.conteudoCabecalho h1{
+    font-size: 25px;
+    font-weight: 600;
+    color: rgb(117, 117, 117);
+    text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.2);
+}
+
+.conteudoModal {
+    width: 100%; 
+    height: auto;
+    display: flex;
+    justify-content: center; 
+}
+
+.modal{
+    width: 90%;
+    background-color: white;   
+}
+
+.modal form {
+    display: flex;
+    justify-content: center;
+    gap: 50px;
+    margin-bottom: 20px;
+}
+
+.modal form input {
+    width: 150px;
+    height: 30px;
+    border: none; 
+    border-bottom: 1px solid black; 
+    outline: none;
+    padding: 8px;
+    background-color: transparent; 
+}
+
+#btnSalvarParciente{
+    width: 100px;
+    background-color: rgb(83, 83, 235);
+    border-radius: 8px;
+    border: none;
+    color: white;
+    font-size: 15px;
+    cursor: pointer;
+    transition: 0.5s ease;
+}
+
+#btnSalvarParciente:hover{
+    background-color: rgb(58, 58, 243);;
+}
+
+.conteudoTabela{
+    width: 90%; 
+    height:auto;
+    display: flex;
+    background-color: white; 
+    margin-top: 5px;
+}
+
+table {
+    width: 100%; 
+    border-collapse: collapse; 
+}
+
+thead th {
+    text-align: center; 
+    padding: 10px; 
+}
+
+thead tr {
+    display: flex;
+    justify-content: space-around; 
+    flex-direction: row; 
+    align-items: center; 
+}
+
+thead th {
+    flex: 1; 
+}
+
+tbody tr {
+    display: flex;
+    justify-content: space-around; 
+    align-items: center; 
+}
+
+tbody td {
+    flex: 1;
+    text-align: center; 
+    padding: 10px; 
+    border-top: 1px solid #cecece;
+}
+
+td button {
+    border: none;
+    outline: none;
+    background: transparent;
+    cursor: pointer;
+}
+
+td i{
+    font-size: 15px;
+}
+@media (max-width: 1020px) {
+    .conteudoCabecalho {
+        width: 95%;
+        height: auto; 
+        margin-top: 10px;
+    }
+
+    .conteudoCabecalho h1 {
+        font-size: 20px; 
+        text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.2); 
+    }
+
+    .modal {
+        width: 95%;    
+    }
+
+    .modal form {
+        display: flex;
+        justify-content: space-between;
+        flex-direction: row; 
+        padding: 5px;
+        gap: 10px; 
+    }
+
+    .modal form input {
+        width: 135px; 
+    }
+
+    #btnSalvarParciente {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 60px;
+        height: 30px; 
+        padding: 10px; 
+        font-size: 12px; 
+    }
+
+    .conteudoTabela {
+        flex-direction: column; 
+        overflow-x: auto; 
+    }
+
+    .conteudoTabela{
+        width: 95%; 
+        height:auto;
+        display: flex;
+        background-color: white; 
+        margin-top: 5px;
+    }
+    
+    table {
+
+        width: 100%; 
+        border-collapse: collapse;
+        font-size: 12px; 
+    }
+    
+    thead th {
+        text-align: center; 
+        padding: 8px; 
+    }
+    
+    thead tr {
+        display: flex;
+        justify-content: space-around; 
+        flex-direction: row; 
+        align-items: center; 
+    }
+    
+    thead th {
+        flex: 1; 
+    }
+
+}
+
+@media (max-width: 768px) {
+   
+    .conteudoCabecalho h1 {
+        font-size: 18px;
+    }
+
+    .modal form {
+        display: flex;
+        flex-direction: column;
+        gap: 5px;
+    }
+
+    .modal form input {
+        width: 100%;
+        font-size: 12px; 
+    }
+
+    #btnSalvarParciente {
+        height: 30px;
+        font-size: 12px;
+    }
+   
+    /* Estilos para transformar a tabela em colunas */
+    table {
+        width: 100%;
+        display: block;
+    }
+
+    thead {
+        display: none;
+    }
+
+    tbody {
+        display: block;
+    }
+
+    tbody tr {
+        display: block;
+        margin-bottom: 10px;
+        border: 1px solid #5e5e5e;
+        padding: 10px;
+    }
+
+    tbody td {
+        display: flex;
+        justify-content: space-between;
+        padding: 5px 0;
+        font-size: 12px;
+        border-top: none;
+        text-align: left; /* Alinha os itens à direita */
+    }
+
+    tbody td::before {
+        content: attr(data-label);
+        flex-basis: 40%;
+        text-align: left;
+        font-weight: bold;
+        padding-right: 10px;
+    }
+}
+
+
+
+
