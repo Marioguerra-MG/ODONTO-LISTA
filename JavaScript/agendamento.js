@@ -14,17 +14,34 @@ function inserirParciente(index) {
     // Formatar a data de `ano-mês-dia` para `dia/mês/ano`
     let data = agenda[index].data;
     let formattedDate = data.split('-').reverse().join('/');
+    let telefone = formatarTelefone(agenda[index].contato);
 
     tr.innerHTML = `
     <td data-label="Nome:">${agenda[index].nome}</td>
     <td data-label="Hora:">${agenda[index].hora}</td>
     <td data-label="Data:">${formattedDate}</td>
-    <td data-label="Contato:">${agenda[index].contato}</td>
+    <!--<td data-label="Contato:">${agenda[index].contato}</td>-->
+    <td data-label="Contato:">${telefone}</td>
     <td class="acao">
       <button id="botaoDeletar" onclick="deleteItem(${index})"><i id="iconeDeletar" class='bx bx-trash'></i></button>
     </td>
   `;
     tbody.appendChild(tr);
+}
+
+function formatarTelefone(telefone) {
+    // Remove todos os caracteres não numéricos
+    telefone = telefone.replace(/\D/g, '');
+
+    // Verifica se o número tem o comprimento esperado
+    if (telefone.length === 11) {
+        // Formata o número como (11) 98765-4321
+        return telefone.replace(/^(\d{2})(\d{5})(\d{4})$/, '($1) $2-$3');
+    } else if (telefone.length === 10) {
+        // Formata o número como (11) 9876-5432
+        return telefone.replace(/^(\d{2})(\d{4})(\d{4})$/, '($1) $2-$3');
+    }
+    return telefone; // Retorna o número sem formatação se não corresponder aos casos esperados
 }
 
 
