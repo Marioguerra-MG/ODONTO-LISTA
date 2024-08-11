@@ -1,31 +1,58 @@
-const sNome = document.querySelector('#mNome');
-const sHora = document.querySelector('#mHora');
-const sData = document.querySelector('#mData');
-const sContato = document.querySelector('#mContato');
-const tbody = document.querySelector('tbody');
-const btnSalvarParciente = document.querySelector('#btnSalvarParciente');
+document.getElementById('btnSalvarParciente').addEventListener('click', function() {
+    // Captura os valores dos inputs
+    const nome = document.getElementById('mNome').value.trim();
+    const hora = document.getElementById('mHora').value.trim();
+    const data = document.getElementById('mData').value.trim();
+    const contato = document.getElementById('mContato').value.trim();
 
-let agenda = [];
-let id;
+    // Verifica se algum campo está vazio
+    if (!nome) {
+        alert("Por favor, preencha o campo Nome.");
+        return;
+    }
+    if (!hora) {
+        alert("Por favor, preencha o campo Hora.");
+        return;
+    }
+    if (!data) {
+        alert("Por favor, preencha o campo Data.");
+        return;
+    }
+    if (!contato) {
+        alert("Por favor, preencha o campo Contato.");
+        return;
+    }
 
-function inserirParciente(index) {
+    // Se todos os campos estiverem preenchidos, prossiga com a lógica de salvar
+    inserirParciente({ nome, hora, data, contato });
+
+    // Limpa os campos após o salvamento
+    document.getElementById('mNome').value = '';
+    document.getElementById('mHora').value = '';
+    document.getElementById('mData').value = '';
+    document.getElementById('mContato').value = '';
+});
+
+function inserirParciente(paciente) {
+    // Aqui você pode adicionar a lógica para inserir o paciente na tabela
+    let tbody = document.querySelector('tbody');
     let tr = document.createElement('tr');
 
     // Formatar a data de `ano-mês-dia` para `dia/mês/ano`
-    let data = agenda[index].data;
-    let formattedDate = data.split('-').reverse().join('/');
-    let telefone = formatarTelefone(agenda[index].contato);
+    let formattedDate = paciente.data.split('-').reverse().join('/');
+
+    // Formatar o número de telefone
+    let telefone = formatarTelefone(paciente.contato);
 
     tr.innerHTML = `
-    <td data-label="Nome:">${agenda[index].nome}</td>
-    <td data-label="Hora:">${agenda[index].hora}</td>
-    <td data-label="Data:">${formattedDate}</td>
-    <!--<td data-label="Contato:">${agenda[index].contato}</td>-->
-    <td data-label="Contato:">${telefone}</td>
-    <td class="acao">
-      <button id="botaoDeletar" onclick="deleteItem(${index})"><i id="iconeDeletar" class='bx bx-trash'></i></button>
-    </td>
-  `;
+        <td data-label="Nome:">${paciente.nome}</td>
+        <td data-label="Hora:">${paciente.hora}</td>
+        <td data-label="Data:">${formattedDate}</td>
+        <td data-label="Contato:">${telefone}</td>
+        <td class="acao">
+            <button id="botaoDeletar" onclick="deleteItem(this)"><i id="iconeDeletar" class='bx bx-trash'></i></button>
+        </td>
+    `;
     tbody.appendChild(tr);
 }
 
@@ -33,72 +60,26 @@ function formatarTelefone(telefone) {
     // Remove todos os caracteres não numéricos
     telefone = telefone.replace(/\D/g, '');
 
-    // Verifica se o número tem o comprimento esperado
-    if (telefone.length === 11) {
-        // Formata o número como (11) 98765-4321
-        return telefone.replace(/^(\d{2})(\d{5})(\d{4})$/, '($1) $2-$3');
-    } else if (telefone.length === 10) {
-        // Formata o número como (11) 9876-5432
-        return telefone.replace(/^(\d{2})(\d{4})(\d{4})$/, '($1) $2-$3');
+    // Verifica o comprimento do número
+    switch (telefone.length) {
+        case 11:
+            return telefone.replace(/^(\d{2})(\d{5})(\d{4})$/, '($1) $2-$3');
+        case 10:
+            return telefone.replace(/^(\d{2})(\d{4})(\d{4})$/, '($1) $2-$3');
+        case 13:
+            return telefone.replace(/^(\d{2})(\d{2})(\d{5})(\d{4})$/, '+$1 ($2) $3-$4');
+        case 12:
+            return telefone.replace(/^(\d{2})(\d{2})(\d{4})(\d{4})$/, '+$1 ($2) $3-$4');
+        case 8:
+            return telefone.replace(/^(\d{4})(\d{4})$/, '$1-$2');
+        case 9:
+            return telefone.replace(/^(\d{5})(\d{4})$/, '$1-$2');
+        default:
+            return telefone;
     }
-    return telefone; // Retorna o número sem formatação se não corresponder aos casos esperados
 }
 
-
-btnSalvarParciente.onclick = e => {
-    e.preventDefault();
-
-    if (sNome.value === '' || sHora.value === '' || sData.value === '' || sContato.value === '') {
-        return;
-    }
-
-    if (id !== undefined) {
-        // Edita um item existente
-        agenda[id].nome = sNome.value;
-        agenda[id].hora = sHora.value;
-        agenda[id].data = sData.value;
-        agenda[id].contato = sContato.value;
-        id = undefined; // Limpa o ID para não editar o próximo paciente erroneamente
-    } else {
-        // Adiciona um novo item
-        agenda.push({
-            nome: sNome.value,
-            hora: sHora.value,
-            data: sData.value,
-            contato: sContato.value
-        });
-    }
-
-    setItensBD(); // Atualiza o localStorage
-    renderAgenda(); // Re-renderiza a tabela
-
-    // Limpa os campos do formulário
-    sNome.value = '';
-    sHora.value = '';
-    sData.value = '';
-    sContato.value = '';
-};
-
-function deleteItem(index) {
-    agenda.splice(index, 1); // Remove o item do array agenda
-    setItensBD(); // Atualiza o localStorage
-    renderAgenda(); // Re-renderiza a tabela
+function deleteItem(button) {
+    // Remove a linha correspondente ao botão de deletar clicado
+    button.closest('tr').remove();
 }
-
-function renderAgenda() {
-    tbody.innerHTML = ''; // Limpa o conteúdo atual da tabela
-    agenda.forEach((item, index) => {
-        inserirParciente(index);
-    });
-}
-
-function loadItens() {
-    agenda = getItensBD(); // Carrega os itens do localStorage
-    renderAgenda(); // Renderiza a tabela
-}
-
-const getItensBD = () => JSON.parse(localStorage.getItem('dbagenda')) ?? [];
-const setItensBD = () => localStorage.setItem('dbagenda', JSON.stringify(agenda));
-
-// Carrega os itens ao iniciar
-loadItens();
