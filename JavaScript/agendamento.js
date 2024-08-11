@@ -10,18 +10,23 @@ let id;
 
 function inserirParciente(index) {
     let tr = document.createElement('tr');
+
+    // Formatar a data de `ano-mês-dia` para `dia/mês/ano`
+    let data = agenda[index].data;
+    let formattedDate = data.split('-').reverse().join('/');
+
     tr.innerHTML = `
-    
     <td data-label="Nome:">${agenda[index].nome}</td>
     <td data-label="Hora:">${agenda[index].hora}</td>
-    <td data-label="Data:">${agenda[index].data}</td>
+    <td data-label="Data:">${formattedDate}</td>
     <td data-label="Contato:">${agenda[index].contato}</td>
     <td class="acao">
-      <button id=" botaoDeletar" onclick="deleteItem(${index})"><i id="iconeDeletar" class='bx bx-trash'></i></button>
+      <button id="botaoDeletar" onclick="deleteItem(${index})"><i id="iconeDeletar" class='bx bx-trash'></i></button>
     </td>
   `;
     tbody.appendChild(tr);
 }
+
 
 btnSalvarParciente.onclick = e => {
     e.preventDefault();
