@@ -1,3 +1,7 @@
+document.addEventListener('DOMContentLoaded', function() {
+    carregarPacientesSalvos();
+});
+
 document.getElementById('btnSalvarParciente').addEventListener('click', function() {
     // Captura os valores dos inputs
     const nome = document.getElementById('mNome').value.trim();
@@ -25,6 +29,9 @@ document.getElementById('btnSalvarParciente').addEventListener('click', function
 
     // Se todos os campos estiverem preenchidos, prossiga com a lógica de salvar
     inserirParciente({ nome, hora, data, contato });
+
+    // Salva o paciente no Local Storage
+    salvarPacienteLocalStorage({ nome, hora, data, contato });
 
     // Limpa os campos após o salvamento
     document.getElementById('mNome').value = '';
@@ -54,6 +61,25 @@ function inserirParciente(paciente) {
         </td>
     `;
     tbody.appendChild(tr);
+}
+
+function salvarPacienteLocalStorage(paciente) {
+    // Recupera os pacientes salvos no Local Storage
+    let pacientes = JSON.parse(localStorage.getItem('pacientes')) || [];
+    
+    // Adiciona o novo paciente à lista
+    pacientes.push(paciente);
+
+    // Salva a lista atualizada no Local Storage
+    localStorage.setItem('pacientes', JSON.stringify(pacientes));
+}
+
+function carregarPacientesSalvos() {
+    // Recupera os pacientes salvos no Local Storage
+    let pacientes = JSON.parse(localStorage.getItem('pacientes')) || [];
+    
+    // Insere cada paciente salvo na tabela
+    pacientes.forEach(paciente => inserirParciente(paciente));
 }
 
 function formatarTelefone(telefone) {
