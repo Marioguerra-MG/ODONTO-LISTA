@@ -128,3 +128,26 @@ document.getElementById('mContato').addEventListener('input', function(e) {
     // Atualiza o valor do campo de entrada com a formatação
     e.target.value = telefone;
 });
+
+// Função de filtro
+document.getElementById('btnPesquisar').addEventListener('input', function() {
+    const filterValue = this.value.toLowerCase();
+    const rows = document.querySelectorAll('tbody tr');
+
+    rows.forEach(row => {
+        const cells = row.querySelectorAll('td');
+        let matched = false;
+
+        cells.forEach(cell => {
+            if (cell.textContent.toLowerCase().includes(filterValue)) {
+                matched = true;
+            }
+        });
+
+        if (matched) {
+            row.style.display = '';
+        } else {
+            row.style.display = 'none';
+        }
+    });
+});
