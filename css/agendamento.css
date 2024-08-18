@@ -215,9 +215,31 @@ td i{
         flex: 1; 
     }
 
+    #dataLabel{
+        font-size: 12px;
+    }
+
+    #horaLabel{
+        font-size: 12px;
+    }
+
+    .labelInputHora #horaLabe{
+        padding: 5px;
+        gap: 10px;
+    }
+
 }
 
 @media (max-width: 768px) {
+
+
+    #dataLabel{
+        font-size: 12px;
+    }
+
+    #horaLabel{
+        font-size: 12px;
+    }
    
     .conteudoCabecalho h1 {
         font-size: 18px;

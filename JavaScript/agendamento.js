@@ -78,6 +78,23 @@ function carregarPacientesSalvos() {
     // Recupera os pacientes salvos no Local Storage
     let pacientes = JSON.parse(localStorage.getItem('pacientes')) || [];
     
+    // Ordena os pacientes por data e hora
+    pacientes.sort((a, b) => {
+        // Comparar datas
+        let dataA = new Date(a.data.split('-').reverse().join('/'));
+        let dataB = new Date(b.data.split('-').reverse().join('/'));
+        
+        if (dataA.getTime() === dataB.getTime()) {
+            // Se as datas forem iguais, comparar horas
+            return a.hora.localeCompare(b.hora);
+        }
+        
+        return dataA - dataB;
+    });
+
+    // Limpa a tabela antes de adicionar os pacientes ordenados
+    document.querySelector('tbody').innerHTML = '';
+    
     // Insere cada paciente salvo na tabela
     pacientes.forEach(paciente => inserirParciente(paciente));
 }
@@ -106,8 +123,36 @@ function formatarTelefone(telefone) {
 }
 
 function deleteItem(button) {
-    // Remove a linha correspondente ao botão de deletar clicado
-    button.closest('tr').remove();
+    // Obter a linha correspondente ao botão de deletar clicado
+    const row = button.closest('tr');
+    
+    // Obter os dados da linha para identificar o item no Local Storage
+    const nome = row.querySelector('td[data-label="Nome:"]').textContent;
+    const hora = row.querySelector('td[data-label="Hora:"]').textContent;
+    const data = row.querySelector('td[data-label="Data:"]').textContent.split('/').reverse().join('-'); // Formatar de volta para `ano-mês-dia`
+    const contato = row.querySelector('td[data-label="Contato:"]').textContent;
+
+    // Remove a linha da tabela
+    row.remove();
+    
+    // Remover o item do Local Storage
+    removerPacienteLocalStorage({ nome, hora, data, contato });
+}
+
+function removerPacienteLocalStorage(paciente) {
+    // Recuperar a lista de pacientes do Local Storage
+    let pacientes = JSON.parse(localStorage.getItem('pacientes')) || [];
+    
+    // Filtrar os pacientes para remover o item específico
+    pacientes = pacientes.filter(p => 
+        p.nome !== paciente.nome || 
+        p.hora !== paciente.hora || 
+        p.data !== paciente.data || 
+        p.contato !== paciente.contato
+    );
+    
+    // Salvar a lista atualizada no Local Storage
+    localStorage.setItem('pacientes', JSON.stringify(pacientes));
 }
 
 document.getElementById('mContato').addEventListener('input', function(e) {
